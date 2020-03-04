@@ -1,2 +1,7 @@
 target/*
 .idea/*
+logs/*
+FTSDemo27/target/*
+FTSDemo30/target/*
+FTSDemo27/logs/*
+FTSDemo30/logs/*
