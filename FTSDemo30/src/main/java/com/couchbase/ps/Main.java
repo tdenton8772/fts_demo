@@ -54,22 +54,24 @@ public class Main {
         Collection collection = main.defaultCollection();
 
         Thread.sleep(5000);
-        JsonObject content = JsonObject.create()
-                .put("name", "test")
-                .put("type", "tester");
+        // JsonObject content = JsonObject.create()
+        //         .put("name", "test")
+        //         .put("type", "tester");
 
-        System.out.println(content);
-        MutationResult result = collection.upsert("test-doc", content);
-        MutationState mutationState = MutationState.from(result.mutationToken().get());
+        // System.out.println(content);
+        // MutationResult result = collection.upsert("test-doc", content);
+        // MutationState mutationState = MutationState.from(result.mutationToken().get());
 
-        System.out.println("Upsert successful: " +  result);
+        // System.out.println("Upsert successful: " +  result);
 
         try {
             final SearchResult search_result = cluster
-                    .searchQuery("unstored",
-                            SearchQuery.match("test"),
+                    .searchQuery(m_props.getProperty("fts_index"),
+                            SearchQuery.match("292822936"),
                             SearchOptions.searchOptions()
-                                    .consistentWith(mutationState));
+                                    .fields("identity_profile.gov_doc_ids.id")
+                                    // .consistentWith(mutationState));
+                                    );
 
             for (SearchRow row : search_result.rows()) {
                 System.out.println("Found row: " + row);

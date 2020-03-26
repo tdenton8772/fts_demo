@@ -64,29 +64,30 @@ public class Main {
         cluster.authenticate(m_props.getProperty("username"), m_props.getProperty("password"));
         bucket = cluster.openBucket(m_props.getProperty("bucket"));
 
-        JsonDocument doc = JsonDocument.create("test-doc", JsonObject.create()
-                .put("name", "test")
-                .put("type", "tester"));
-        JsonDocument holdingVar = bucket.upsert(doc);
-        System.out.println(holdingVar);
+        // JsonDocument doc = JsonDocument.create("test-doc", JsonObject.create()
+        //         .put("name", "test")
+        //         .put("type", "tester"));
+        // JsonDocument holdingVar = bucket.upsert(doc);
+        // System.out.println(holdingVar);
 
         String indexName = m_props.getProperty("fts_index");
-        MatchQuery query = SearchQuery.match("test");
+        MatchQuery query = SearchQuery.match("6432159920");
 
         SearchQueryResult result = bucket.query(
                 new SearchQuery(indexName, query)
                         .limit(10)
-                        .consistentWith(holdingVar)
+                        // .consistentWith(holdingVar)
+                        .fields("identity_profile.gov_doc_ids.id")
                 );
 
         System.out.println("Simple Text Query: " + result);
 
-        JsonDocument test_doc = bucket.get("test-doc");
-        if(test_doc != null){
-            bucket.upsert(test_doc);
-        }
-
-        N1qlQueryResult n1qlHoldingVar = bucket.query(N1qlQuery.simple("Select * from `" + m_props.getProperty("bucket") + "` limit 100;"));
+        // JsonDocument test_doc = bucket.get("test-doc");
+        // if(test_doc != null){
+        //     bucket.upsert(test_doc);
+        // }
+        //
+        // N1qlQueryResult n1qlHoldingVar = bucket.query(N1qlQuery.simple("Select * from `" + m_props.getProperty("bucket") + "` limit 100;"));
 
         try {
             Thread.sleep(1000);
